@@ -1,0 +1,11 @@
+{
+  "name": "GBNodeJS",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/BatMaxim/GBNodeJS.git",
+  "author": "Maksim <gato-v@yandex.ru>",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.4.0"
+  }
+}
