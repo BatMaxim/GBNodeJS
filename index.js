@@ -1,5 +1,8 @@
 require('colors')
 
+const Colors = {GREEN : 0, YELLOW: 1, RED : 2}
+
+let currentColor = Colors.GREEN;
 const leftRest = process.argv[2];
 const rightRest = process.argv[3];
 
@@ -9,14 +12,35 @@ if(isNaN(leftRest) || isNaN(rightRest)){
 }
 
 const isPrimeNum = (num) => {
-    if (num < 1)
+    if (num <= 1)
         return false;
     for(let i = 2; i < num; i++)
         if(num % i === 0) return false;
     return true;
 }
+const changeColor = () => {
+    currentColor++;
+    if (currentColor > Colors.RED)
+        currentColor = Colors.GREEN;
+}
+
+const colorPrint = (num) => {
+   switch (currentColor){
+       case Colors.RED:
+           console.log(`${num}`.red);
+           break;
+       case Colors.GREEN:
+           console.log(`${num}`.green);
+           break;
+       case Colors.YELLOW:
+           console.log(`${num}`.yellow);
+           break;
+   }
+   changeColor();
+}
+
 
 for (let i = leftRest; i <= rightRest; i++){
-    isPrimeNum(i) && console.log(i);
+    isPrimeNum(i) && colorPrint(i);
 }
 
