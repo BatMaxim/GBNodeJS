@@ -5,9 +5,10 @@ const Colors = {GREEN : 0, YELLOW: 1, RED : 2}
 let currentColor = Colors.GREEN;
 const leftRest = process.argv[2];
 const rightRest = process.argv[3];
+let noPrimeNum = true;
 
 if(isNaN(leftRest) || isNaN(rightRest)){
-    console.log('incorrect start parameters'.red);
+    console.log('Incorrect start parameters'.red);
     return;
 }
 
@@ -25,6 +26,7 @@ const changeColor = () => {
 }
 
 const colorPrint = (num) => {
+   if(noPrimeNum) noPrimeNum = false;
    switch (currentColor){
        case Colors.RED:
            console.log(`${num}`.red);
@@ -43,4 +45,5 @@ const colorPrint = (num) => {
 for (let i = leftRest; i <= rightRest; i++){
     isPrimeNum(i) && colorPrint(i);
 }
-
+if(noPrimeNum)
+    console.log(`There are no primes in this range[${leftRest},${rightRest}]`.red);
