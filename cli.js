@@ -5,12 +5,27 @@ const path = require('path');
 const yargs = require('yargs');
 const inquirer = require('inquirer');
 
+const getPath = (path) => {
+    let newPath = path;
+    while (newPath.indexOf("../") > 0){
+        const parsePath = newPath.split("\\");
+        if(parsePath.indexOf("../") != 1)
+            parsePath.splice(parsePath.indexOf("../")-1, 2);
+        else
+            parsePath.splice(parsePath.indexOf("../"), 1);
+        newPath = parsePath.join("\\")
+    }
+    return newPath;
+}
+
 http.createServer((req, res)=>{
     const isFile = fileName => fs.lstatSync(fileName).isFile();
-    let currentDir = path.join(process.cwd(), req.url).replace(/__back/g, "../");
+    let currentDir = path.join(process.cwd(), req.url)
+        .replace(/__back/g, "../")
+        .replace(/%20/g, " ");
     console.log(currentDir);
     if(!fs.existsSync(currentDir))
-       return res.end('File or directory nt found');
+       return res.end('File or directory not found');
     if(isFile(currentDir))
         return fs.createReadStream(currentDir).pipe(res);
 
@@ -21,10 +36,9 @@ http.createServer((req, res)=>{
         linksList+= `<li><a href="${filePath}">${el}</a></li>`
     });
 
-
     const HTML = fs
         .readFileSync(path.join(__dirname, 'index.html'), 'utf-8')
-        .replace('##path', currentDir)
+        .replace('##path', getPath(currentDir))
         .replace('##links', linksList);
 
     res.writeHead(200, {
