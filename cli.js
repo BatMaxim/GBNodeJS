@@ -47,17 +47,21 @@ const inquirer = require('inquirer');
 
 http.createServer((req, res)=>{
     const isFile = fileName => fs.lstatSync(fileName).isFile();
-
     let currentDir = path.join(process.cwd(), req.url);
     if(!fs.existsSync(currentDir))
-        res.end('File or directory nt found');
+       return res.end('File or directory nt found');
 
     if(isFile(currentDir))
         return fs.createReadStream(currentDir).pipe(res);
 
-    
+    let linksList = "";
 
-    let linksList = "123";
+    fs.readdirSync(currentDir).forEach(el =>{
+        const filePath = path.join(req.url, el);
+        linksList+= `<li><a href="${filePath}">${el}</a></li>`
+    });
+
+
     let curPath = "1";
     const HTML = fs
         .readFileSync(path.join(__dirname, 'index.html'), 'utf-8')
